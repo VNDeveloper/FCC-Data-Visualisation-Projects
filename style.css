@@ -6,6 +6,8 @@
   --text-secondary: #ececec;
   --bg-primary: #23232e;
   --bg-secondary: #141418;
+  --active-nav: black;
+  --icon-color: #df49a6;
   --transition-speed: 600ms;
 }
 
@@ -18,7 +20,6 @@ body {
 
 main {
   margin-left: 5rem;
-  padding: 1rem;
 }
 
 body::-webkit-scrollbar {
@@ -33,6 +34,7 @@ body::-webkit-scrollbar-thumb {
   background: #6649b5;
 }
 
+/* Navbar */
 .navbar {
   position: fixed;
   background-color: var(--bg-secondary);
@@ -52,8 +54,8 @@ body::-webkit-scrollbar-thumb {
   width: 100%;
 }
 
-.nav-item:last-child {
-  margin-top: auto;
+.nav-item .active {
+  background: var(--active-nav);
 }
 
 .nav-link {
@@ -105,6 +107,25 @@ body::-webkit-scrollbar-thumb {
 .fa-primary,
 .fa-secondary {
   transition: var(--transition-speed);
+}
+
+/* Chart Section */
+section {
+  height: 100vh;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #3b3b3b;
+}
+
+.chart-container {
+  width: 80%;
+  height: 60%;
+  border: 1px solid black;
+  border-radius: 0.5rem;
+  background: white;
+  box-shadow: 0 0 3rem white;
 }
 
 /* Small screens */
