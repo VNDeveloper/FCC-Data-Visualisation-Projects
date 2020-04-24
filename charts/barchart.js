@@ -15,6 +15,8 @@ const drawChart = async () => {
   // Intial variables
   let data = await getData();
 
+  console.log("data", data);
+
   const element = document.getElementById("js-barchart-container");
 
   const width = element.offsetWidth;
