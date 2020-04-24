@@ -102,10 +102,10 @@ const drawChart = async () => {
       .style("left", d3.event.pageX + 10 + "px")
       .attr("data-date", xValue(d))
       .html(
-        "<p> Date:" +
+        "<p> Date: " +
           xValue(d).split("-").reverse().join("-") +
           "</p>" +
-          "<p>" +
+          "<p> Value: " +
           yValue(d) +
           "</p>"
       );
