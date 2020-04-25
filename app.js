@@ -1,9 +1,8 @@
 "use strict";
 
-import drawChart from "./charts/barchart.js";
+import drawBarChart from "./charts/barchart.js";
 
 // Selectors
-const nav = document.querySelector("#js-navbar-nav");
 const navLinks = document.getElementsByClassName("nav-link");
 
 /* Event Listeners */
@@ -16,10 +15,32 @@ for (let index in navLinks) {
 }
 
 // Functions
+/**
+ * adding active class base on the the clicked nav
+ */
 function navOnClick() {
-  let current = document.getElementsByClassName("active");
-  current[0].className = current[0].className.replace(" active", "");
-  this.className += " active";
+  let previousNav = document.getElementsByClassName("active");
+  let clickOnID = this.getAttribute("href").substring(1);
+
+  previousNav[0].classList.remove("active");
+  this.classList.add("active");
+
+  displaySection(clickOnID);
 }
 
-drawChart();
+/**
+ * determine which section to display base on current window.location.hash
+ */
+function displaySection(activeSectionID) {
+  let chartSections = document.getElementsByTagName("section");
+
+  for (let section of chartSections) {
+    if (section.id === activeSectionID) {
+      document.getElementById(section.id).classList.add("active-section");
+    } else {
+      document.getElementById(section.id).classList.remove("active-section");
+    }
+  }
+}
+
+drawBarChart();

@@ -66,6 +66,7 @@ const drawChart = async () => {
     .attr("text-anchor", "middle")
     .attr("id", "title")
     .style("font-size", "2rem")
+    .style("font-weight", "bold")
     .text("United State GDP");
 
   const g = svg

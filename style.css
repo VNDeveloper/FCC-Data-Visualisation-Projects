@@ -116,9 +116,12 @@ body::-webkit-scrollbar-thumb {
 
 /* Chart Section */
 section {
-  height: 100vh;
-  padding: 1rem;
+  display: none;
+}
+
+.active-section {
   display: flex;
+  height: 100vh;
   justify-content: center;
   align-items: center;
   background: #3b3b3b;
@@ -144,6 +147,7 @@ section {
 #barchart .barchart-tooltip p {
   margin: 10px 0;
 }
+
 /* Small screens */
 @media only screen and (max-width: 600px) {
   .navbar {
