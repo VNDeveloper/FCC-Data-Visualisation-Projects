@@ -137,7 +137,6 @@ section {
 #barchart .barchart-tooltip {
   position: absolute;
   border: 1px solid black;
-  padding: 0 10px;
   border-radius: 0.5rem;
   background: white;
 }

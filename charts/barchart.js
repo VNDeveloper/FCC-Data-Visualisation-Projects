@@ -20,7 +20,7 @@ const drawChart = async () => {
   const width = element.offsetWidth;
   const height = element.offsetHeight;
 
-  const margin = { top: 30, right: 20, bottom: 30, left: 50 };
+  const margin = { top: 40, right: 20, bottom: 30, left: 50 };
 
   // Calculated variables
   const innerWidth = width - margin.right - margin.left;
@@ -38,17 +38,17 @@ const drawChart = async () => {
   const xScale = d3
     .scaleTime()
     .domain(d3.extent(data, (datum) => new Date(xValue(datum))))
-    .range([0, innerWidth]);
+    .rangeRound([0, innerWidth]);
 
   // yScale is linear data
   const yScale = d3
     .scaleLinear()
     .domain([0, d3.max(data, (datum) => yValue(datum))])
-    .range([innerHeight, 0]);
+    .rangeRound([innerHeight, 0]);
 
   // create xAxis and yAxis
   const xAxis = d3.axisBottom(xScale);
-  const yAxis = d3.axisLeft(yScale);
+  const yAxis = d3.axisLeft(yScale).tickSize(-innerWidth);
 
   // Draw the svg
   const svg = d3
@@ -65,7 +65,7 @@ const drawChart = async () => {
     .attr("y", margin.top / 2 + 15)
     .attr("text-anchor", "middle")
     .attr("id", "title")
-    .style("font-size", "1.5rem")
+    .style("font-size", "2rem")
     .text("United State GDP");
 
   const g = svg
@@ -87,19 +87,20 @@ const drawChart = async () => {
     .attr("class", "barchart-tooltip");
 
   // Three event mouseover, mousemove and mouseleave
-  const mouseover = (d) => {
+  function mouseover(d) {
     tooltip.transition().style("opacity", 1);
     tooltip
       .style("top", d3.event.pageY + 20 + "px")
       .style("left", d3.event.pageX + 10 + "px");
 
     d3.select(this).style("opacity", 0.1);
-  };
+  }
 
-  const mousemove = (d) => {
+  function mousemove(d) {
     tooltip
       .style("top", d3.event.pageY - 25 + "px")
       .style("left", d3.event.pageX + 10 + "px")
+      .style("padding", "0 10px")
       .attr("data-date", xValue(d))
       .html(
         "<p> Date: " +
@@ -110,13 +111,13 @@ const drawChart = async () => {
           "</p>"
       );
 
-    d3.select(this).style("opacity", 0.8);
-  };
+    d3.select("opacity", 0.8);
+  }
 
-  const mouseleave = (d) => {
+  function mouseleave(d) {
     tooltip.transition().style("opacity", 0);
     d3.select(this).style("opacity", 1);
-  };
+  }
 
   // Drawing the bar
   g.append("g")
@@ -124,9 +125,9 @@ const drawChart = async () => {
     .data(data)
     .enter()
     .append("rect")
-    .attr("x", (d, i) => xScale(new Date(xValue(d))))
+    .attr("x", (d, i) => i * (innerWidth / data.length))
     .attr("y", (d, i) => yScale(yValue(d)))
-    .attr("width", (d, i) => innerWidth / data.length)
+    .attr("width", (d, i) => (innerWidth / data.length) * 0.9)
     .attr("height", (d, i) => innerHeight - yScale(yValue(d)))
     .attr("fill", "steelblue")
     .attr("class", "bar")
