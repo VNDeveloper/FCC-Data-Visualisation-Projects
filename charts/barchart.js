@@ -1,5 +1,4 @@
 "use strict";
-// Selectors
 
 // Function
 async function getData() {

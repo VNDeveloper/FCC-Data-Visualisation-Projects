@@ -1,6 +1,7 @@
 "use strict";
 
 import drawBarChart from "./charts/barchart.js";
+import drawScatterplotChart from "./charts/scatterplot.js";
 
 // Selectors
 const navLinks = document.getElementsByClassName("nav-link");
@@ -43,4 +44,5 @@ function displaySection(activeSectionID) {
   }
 }
 
-drawBarChart();
+// drawBarChart();
+drawScatterplotChart();
