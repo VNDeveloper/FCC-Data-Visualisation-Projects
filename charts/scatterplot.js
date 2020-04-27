@@ -29,18 +29,23 @@ async function drawChart() {
   const yValue = (datum) => d3.timeParse("%M:%S")(datum.Time);
 
   // set scales
+  const minDate = d3.min(data, (datum) => xValue(datum) - 1);
+  const maxDate = d3.max(data, (datum) => xValue(datum) + 1);
+
   const xScale = d3
     .scaleLinear()
-    .domain(d3.extent(data, (datum) => xValue(datum)))
-    .range([0, innerWidth]);
+    .domain([minDate, maxDate])
+    .range([0, innerWidth])
+    .nice();
 
   const yScale = d3
     .scaleLinear()
     .domain(d3.extent(data, (datum) => yValue(datum)))
-    .range([innerHeight, 0]);
+    .range([innerHeight, 0])
+    .nice();
 
   // set y and x axises
-  const xAxis = d3.axisBottom(xScale);
+  const xAxis = d3.axisBottom(xScale).tickFormat((data) => data);
 
   const yAxis = d3.axisLeft(yScale).tickFormat(d3.timeFormat("%M:%S"));
 
