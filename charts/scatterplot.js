@@ -27,6 +27,7 @@ async function drawChart() {
   // helper funtion
   const xValue = (datum) => datum.Year;
   const yValue = (datum) => d3.timeParse("%M:%S")(datum.Time);
+  const isDoping = (datum) => !datum.Doping || false;
 
   // set scales
   const minDate = d3.min(data, (datum) => xValue(datum) - 1);
@@ -43,6 +44,10 @@ async function drawChart() {
     .domain(d3.extent(data, (datum) => yValue(datum)))
     .range([innerHeight, 0])
     .nice();
+
+  const dopingColorScale = d3
+    .scaleOrdinal([`#f7a900`, `#0080f7`])
+    .domain([true, false]);
 
   // set y and x axises
   const xAxis = d3.axisBottom(xScale).tickFormat((data) => data);
@@ -71,9 +76,13 @@ async function drawChart() {
     .data(data)
     .enter()
     .append("circle")
-    .attr("cx", (d) => xScale(xValue(d)))
-    .attr("cy", (d) => yScale(yValue(d)))
-    .attr("r", 5);
+    .attr("cx", (datum) => xScale(xValue(datum)))
+    .attr("cy", (datum) => yScale(yValue(datum)))
+    .attr("r", 5)
+    .attr("fill", (datum, i) => {
+      console.log("isDroping", isDoping(datum));
+      return dopingColorScale(isDoping(datum));
+    });
 }
 
 export default drawChart;
