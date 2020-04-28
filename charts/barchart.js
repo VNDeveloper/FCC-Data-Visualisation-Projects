@@ -26,20 +26,14 @@ const drawChart = async () => {
   const innerHeight = height - margin.top - margin.bottom;
 
   const xValue = (data) => data[0];
-  const yValue = (data) => {
-    // console.log(data[1]);
-    return data[1];
-  };
+  const yValue = (data) => data[1];
 
   // set up the xScale and yScale
-
-  // xScale is date data
   const xScale = d3
     .scaleTime()
     .domain(d3.extent(data, (datum) => new Date(xValue(datum))))
     .rangeRound([0, innerWidth]);
 
-  // yScale is linear data
   const yScale = d3
     .scaleLinear()
     .domain([0, d3.max(data, (datum) => yValue(datum))])
