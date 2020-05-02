@@ -20,7 +20,7 @@ async function drawChart() {
   const width = element.offsetWidth;
   const height = element.offsetHeight;
 
-  const margin = { top: 40, right: 40, bottom: 40, left: 60 };
+  const margin = { top: 40, right: 40, bottom: 40, left: 80 };
 
   // calculated variables
   const innerWidth = width - margin.right - margin.left;
@@ -53,7 +53,6 @@ async function drawChart() {
 
   // set y and x axises
   const xAxis = d3.axisBottom(xScale).tickFormat((data) => data);
-
   const yAxis = d3.axisLeft(yScale).tickFormat(d3.timeFormat("%M:%S"));
 
   // draw the chart
@@ -63,11 +62,26 @@ async function drawChart() {
     .attr("width", width)
     .attr("height", height);
 
+  // add title and subtitle
+  const headerGroup = svg.append('g')
+    .attr("transform", `translate(${margin.left}, ${margin.top - 20})`);
+
+  // title
+  headerGroup.append('text')
+    .attr('x', `${innerWidth / 2}`)
+    .attr('text-anchor', 'middle')
+    .style('font-size', '1.25em')
+    .text('Doping in Profressional Bicycle Racing');
+
+  // subtile
+  headerGroup.append('text')
+    .attr('x', `${innerWidth / 2}`)
+    .attr('y', `20`)
+    .attr('text-anchor', 'middle')
+    .text('35 Fastest times up Alpe d\'Huez');
   const group = svg
     .append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
-
-  console.log('dopingColorScale', colorScale.domain());
 
   // add color legend
   group.append('g')
@@ -98,7 +112,6 @@ async function drawChart() {
     .attr("cy", (datum) => yScale(yValue(datum)))
     .attr("r", 7)
     .attr("fill", (datum, i) => {
-      console.log("isDroping", isDoping(datum));
       return colorScale(isDoping(datum));
     });
 
