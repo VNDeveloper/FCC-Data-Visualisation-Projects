@@ -19,7 +19,7 @@ async function drawChart() {
   const width = element.offsetWidth;
   const height = element.offsetHeight;
 
-  const margin = { top: 40, right: 40, bottom: 40, left: 80 };
+  const margin = { top: 70, right: 40, bottom: 40, left: 80 };
 
   // calculated variables
   const innerWidth = width - margin.right - margin.left;
@@ -37,14 +37,12 @@ async function drawChart() {
   const xScale = d3
     .scaleLinear()
     .domain([minDate, maxDate])
-    .range([0, innerWidth])
-    .nice();
+    .range([0, innerWidth]);
 
   const yScale = d3
     .scaleLinear()
     .domain(d3.extent(data, (datum) => yValue(datum)))
-    .range([innerHeight, 0])
-    .nice();
+    .range([innerHeight, 0]);
 
   const colorScale = d3
     .scaleOrdinal([`#f7a900`, `#0080f7`])
@@ -64,7 +62,7 @@ async function drawChart() {
   // add title and subtitle
   const headerGroup = svg
     .append("g")
-    .attr("transform", `translate(${margin.left}, ${margin.top - 20})`);
+    .attr("transform", `translate(${margin.left}, ${margin.top - 40})`);
 
   // title
   headerGroup
@@ -91,6 +89,7 @@ async function drawChart() {
   group
     .append("g")
     .attr("transform", `translate(${innerWidth - 10}, ${innerHeight / 2})`)
+    .attr("id", "legend")
     .call(colorLegend, {
       colorScale,
       heightSpacing: 20,
@@ -139,7 +138,7 @@ async function drawChart() {
       .style("top", d3.event.pageY - 25 + "px")
       .style("left", d3.event.pageX + 10 + "px")
       .style("padding", "0 10px")
-      .attr("data-date", xValue(d))
+      .attr("data-year", xValue(d))
       .style("background-color", colorScale(isDoping(d)))
       .style("opacity", 0.5)
       .html(
@@ -167,6 +166,8 @@ async function drawChart() {
     .style("stroke", "black")
     .style("opacity", 0.5)
     .attr("fill", (datum, i) => colorScale(isDoping(datum)))
+    .attr("data-xvalue", (datum) => xValue(datum))
+    .attr("data-yvalue", (datum) => yValue(datum))
     .on("mouseover", mouseover)
     .on("mousemove", mousemove)
     .on("mouseleave", mouseleave);
