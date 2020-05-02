@@ -119,6 +119,40 @@ async function drawChart() {
   // add y-axis
   group.append("g").call(yAxis).attr("id", "y-axis");
 
+  // Tooltip
+  let tooltip = d3
+    .select("#js-scatterplot-container")
+    .append("div")
+    .attr("id", "tooltip")
+    .attr("class", "scatterplot-tooltip");
+
+  // Three event mouseover, mousemove and mouseleave
+  function mouseover(d) {
+    tooltip.transition().style("opacity", 1);
+    tooltip
+      .style("top", d3.event.pageY + 20 + "px")
+      .style("left", d3.event.pageX + 10 + "px");
+  }
+
+  function mousemove(d) {
+    tooltip
+      .style("top", d3.event.pageY - 25 + "px")
+      .style("left", d3.event.pageX + 10 + "px")
+      .style("padding", "0 10px")
+      .attr("data-date", xValue(d))
+      .style("background-color", colorScale(isDoping(d)))
+      .style("opacity", 0.5)
+      .html(
+        `<p> ${d.Name}. ${d.Nationality} </p>
+        <p>Year: ${d.Year}, Time: ${d.Time} </p>
+        <p>${d.Doping}</p>`
+      );
+  }
+
+  function mouseleave(d) {
+    tooltip.transition().style("opacity", 0);
+  }
+
   const circleGroup = group.append("g");
 
   circleGroup
@@ -132,9 +166,10 @@ async function drawChart() {
     .attr("class", "dot")
     .style("stroke", "black")
     .style("opacity", 0.5)
-    .attr("fill", (datum, i) => {
-      return colorScale(isDoping(datum));
-    });
+    .attr("fill", (datum, i) => colorScale(isDoping(datum)))
+    .on("mouseover", mouseover)
+    .on("mousemove", mousemove)
+    .on("mouseleave", mouseleave);
 }
 
 export default drawChart;
