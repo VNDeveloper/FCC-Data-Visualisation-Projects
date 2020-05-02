@@ -1,4 +1,6 @@
 "use strict";
+import { colorLegend } from './colorLegend.js'
+
 
 async function getData() {
   let response = await fetch(
@@ -31,7 +33,7 @@ async function drawChart() {
 
   // set scales
   const minDate = d3.min(data, (datum) => xValue(datum) - 1);
-  const maxDate = d3.max(data, (datum) => xValue(datum) + 1);
+  const maxDate = d3.max(data, (datum) => xValue(datum));
 
   const xScale = d3
     .scaleLinear()
@@ -45,7 +47,7 @@ async function drawChart() {
     .range([innerHeight, 0])
     .nice();
 
-  const dopingColorScale = d3
+  const colorScale = d3
     .scaleOrdinal([`#f7a900`, `#0080f7`])
     .domain([true, false]);
 
@@ -65,24 +67,42 @@ async function drawChart() {
     .append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
+  console.log('dopingColorScale', colorScale.domain());
+
+  // add color legend
+  group.append('g')
+    .attr('transform', `translate(${innerWidth - 10}, ${innerHeight / 2})`)
+    .call(colorLegend,
+      {
+        colorScale,
+        heightSpacing: 30,
+        fontSize: '0.6em',
+        circleRadius: 7,
+        textSpacing: 10
+      }
+    )
+
   group
     .append("g")
     .call(xAxis)
     .attr("transform", `translate(0, ${innerHeight})`);
   group.append("g").call(yAxis);
 
-  group
+  const circleGroup = group.append('g');
+  circleGroup
     .selectAll("circle")
     .data(data)
     .enter()
     .append("circle")
     .attr("cx", (datum) => xScale(xValue(datum)))
     .attr("cy", (datum) => yScale(yValue(datum)))
-    .attr("r", 5)
+    .attr("r", 7)
     .attr("fill", (datum, i) => {
       console.log("isDroping", isDoping(datum));
-      return dopingColorScale(isDoping(datum));
+      return colorScale(isDoping(datum));
     });
+
+
 }
 
 export default drawChart;
