@@ -79,9 +79,13 @@ async function drawChart() {
     .attr('y', `20`)
     .attr('text-anchor', 'middle')
     .text('35 Fastest times up Alpe d\'Huez');
+
   const group = svg
     .append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+  // x-axis title
+
 
   // add color legend
   group.append('g')
@@ -89,18 +93,30 @@ async function drawChart() {
     .call(colorLegend,
       {
         colorScale,
-        heightSpacing: 30,
+        heightSpacing: 20,
         fontSize: '0.6em',
         circleRadius: 7,
         textSpacing: 10
       }
     )
 
+  // add x-axis
   group
-    .append("g")
+    .append('g')
     .call(xAxis)
-    .attr("transform", `translate(0, ${innerHeight})`);
-  group.append("g").call(yAxis);
+    .attr('transform', `translate(0, ${innerHeight})`);
+
+  // add x-axis title
+  group.append('text')
+    .attr('transform', 'rotate(-90)')
+    .attr('y', -(margin.left - 20))
+    .attr('x', -(height / 8.3))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("Time in Minutes");
+
+  // add y-axis
+  group.append('g').call(yAxis);
 
   const circleGroup = group.append('g');
   circleGroup
