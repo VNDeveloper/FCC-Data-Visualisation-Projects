@@ -1,6 +1,5 @@
 "use strict";
-import { colorLegend } from './colorLegend.js'
-
+import { colorLegend } from "./colorLegend.js";
 
 async function getData() {
   let response = await fetch(
@@ -63,62 +62,65 @@ async function drawChart() {
     .attr("height", height);
 
   // add title and subtitle
-  const headerGroup = svg.append('g')
+  const headerGroup = svg
+    .append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top - 20})`);
 
   // title
-  headerGroup.append('text')
-    .attr('x', `${innerWidth / 2}`)
-    .attr('text-anchor', 'middle')
-    .style('font-size', '1.25em')
-    .text('Doping in Profressional Bicycle Racing');
+  headerGroup
+    .append("text")
+    .attr("x", `${innerWidth / 2}`)
+    .attr("text-anchor", "middle")
+    .attr("id", "title")
+    .style("font-size", "1.25em")
+    .text("Doping in Profressional Bicycle Racing");
 
   // subtile
-  headerGroup.append('text')
-    .attr('x', `${innerWidth / 2}`)
-    .attr('y', `20`)
-    .attr('text-anchor', 'middle')
-    .text('35 Fastest times up Alpe d\'Huez');
+  headerGroup
+    .append("text")
+    .attr("x", `${innerWidth / 2}`)
+    .attr("y", `20`)
+    .attr("text-anchor", "middle")
+    .text("35 Fastest times up Alpe d'Huez");
 
   const group = svg
     .append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-  // x-axis title
-
-
   // add color legend
-  group.append('g')
-    .attr('transform', `translate(${innerWidth - 10}, ${innerHeight / 2})`)
-    .call(colorLegend,
-      {
-        colorScale,
-        heightSpacing: 20,
-        fontSize: '0.6em',
-        circleRadius: 7,
-        textSpacing: 10
-      }
-    )
+  group
+    .append("g")
+    .attr("transform", `translate(${innerWidth - 10}, ${innerHeight / 2})`)
+    .call(colorLegend, {
+      colorScale,
+      heightSpacing: 20,
+      fontSize: "0.6em",
+      circleRadius: 7,
+      textSpacing: 10,
+    });
 
   // add x-axis
   group
-    .append('g')
+    .append("g")
     .call(xAxis)
-    .attr('transform', `translate(0, ${innerHeight})`);
+    .attr("id", "x-axis")
+    .attr("transform", `translate(0, ${innerHeight})`);
 
   // add x-axis title
-  group.append('text')
-    .attr('transform', 'rotate(-90)')
-    .attr('y', -(margin.left - 20))
-    .attr('x', -(height / 8.3))
+  group
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -(margin.left - 20))
+    .attr("x", -(height / 8.3))
     .attr("dy", "1em")
     .style("text-anchor", "middle")
     .text("Time in Minutes");
 
   // add y-axis
-  group.append('g').call(yAxis);
+  group.append("g").call(yAxis).attr("id", "y-axis");
 
-  const circleGroup = group.append('g');
+  const circleGroup = group.append("g");
+
   circleGroup
     .selectAll("circle")
     .data(data)
@@ -127,11 +129,12 @@ async function drawChart() {
     .attr("cx", (datum) => xScale(xValue(datum)))
     .attr("cy", (datum) => yScale(yValue(datum)))
     .attr("r", 7)
+    .attr("class", "dot")
+    .style("stroke", "black")
+    .style("opacity", 0.5)
     .attr("fill", (datum, i) => {
       return colorScale(isDoping(datum));
     });
-
-
 }
 
 export default drawChart;
